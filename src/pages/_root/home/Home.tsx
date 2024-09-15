@@ -3,7 +3,6 @@ import Post from "../../../components/post/Post";
 import { useGetRecentPosts } from "@/lib/react-query/queriesAndMutations";
 import { Models } from "appwrite";
 import InfinitySpinLoader from "@/components/loaders/InfinitySpinLoader";
-import { logInfo } from "@/utils/log";
 import { Badge } from "@/components/ui/badge";
 
 const Home = () => {
@@ -17,7 +16,7 @@ const Home = () => {
       </div>
     );
   }
-  logInfo(latestPosts?.total);
+
   return (
     <>
       <H1 className="text-center pt-6 text-blue-400 hidden xl:block font-poppins font-semibold">
