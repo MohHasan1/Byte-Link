@@ -5,19 +5,18 @@ import { Link as LinkIcon } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useSigninUser } from "@/lib/react-query/queriesAndMutations";
-import { useToast } from "@/components/ui/use-toast";
+// import { useToast } from "@/components/ui/use-toast";
 import { useAuthctx } from "@/context/AuthCtx";
 import FormInputField from "@/components/form/FormInputField";
 import { H2, H4, Lead, P } from "@/components/typography/typography";
 import { SignInValidation, SignInValidationProps } from "@/lib/zod/validation";
 import { handleAsyncOperation } from "@/utils/handleOperations";
 
-
 const SignInForm = () => {
   const navigate = useNavigate();
 
   const { checkAuthUser } = useAuthctx();
-  const { toast } = useToast();
+  // const { toast } = useToast();
   const { mutateAsync: signIn, isPending } = useSigninUser();
 
   // 1. Define your form.
@@ -31,21 +30,19 @@ const SignInForm = () => {
 
   // 2. Define a submit handler.
   async function onSubmit(values: SignInValidationProps) {
-
-
-    const session = await handleAsyncOperation(() =>
+    await handleAsyncOperation(() =>
       signIn({
         email: values.email,
         password: values.password,
       })
     );
 
-    if (!session) {
-      return toast({
-        variant: "destructive",
-        title: "Sign-in failed. Please try again.",
-      });
-    }
+    // if (!session) {
+    //   return toast({
+    //     variant: "destructive",
+    //     title: "Sign-in failed. Please try again.",
+    //   });
+    // }
 
     // we are using toast inside the function so its not triggeed.
     const auth = await checkAuthUser();

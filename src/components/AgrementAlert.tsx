@@ -16,13 +16,13 @@ const Agreement = ({ showAlert = false }: { showAlert?: boolean }) => {
         <AlertDialogTrigger>Show Rules</AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-red-700">IMPORTANT: Please read before signing up.</AlertDialogTitle>
+            <AlertDialogTitle className="text-red-700 text-sm md:text-lg text-center">IMPORTANT!</AlertDialogTitle>
             <AlertDialogDescription>
-              <div className="container mx-auto max-w-3xl">
-                <h1 className="text-2xl font-bold mb-4">
+              <div className="sm:p-4 max-h-dvh" >
+                <h1 className="text-lg md:text-2xl font-bold mb-4">
                   Byte-Link Usage Rules
                 </h1>
-                <ul className="list-disc pl-5 space-y-2">
+                <ul className="list-disc text-xs sm:text-lg space-y-2">
                   <li>
                     No inappropriate pictures, titles, or descriptions. Uploaded
                     content must not contain illegal, harmful, or offensive
