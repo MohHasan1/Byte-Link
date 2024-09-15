@@ -14,7 +14,6 @@ import {
   useUpdatePost,
 } from "@/lib/react-query/queriesAndMutations";
 import { useAuthctx } from "@/context/AuthCtx";
-import { logInfo } from "@/utils/log";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 import { Models } from "appwrite";
@@ -41,7 +40,7 @@ const PostForm = ({
   });
 
   const { mutateAsync: createPost, isPending } = useCreatePost();
-  const { mutateAsync: updatePost } = useUpdatePost();
+  const { mutateAsync: updatePost, isPending:isUpdatePending } = useUpdatePost();
   const { user } = useAuthctx();
 
   const navigate = useNavigate();
@@ -49,10 +48,10 @@ const PostForm = ({
 
   // 2. Define a submit handler.
   async function onSubmit(postInfo: CPostValidationProps) {
-    logInfo(postInfo);
+    // logInfo(postInfo);
 
     if (post && action == "update") {
-      const updatedPost = await await handleAsyncOperation(() =>
+      await handleAsyncOperation(() =>
         updatePost({
           ...postInfo,
           postId: post.$id,
@@ -60,12 +59,21 @@ const PostForm = ({
           imageUrl: post.imageURL,
         })
       );
-      if (!updatedPost) {
-        return toast({
-          title: "please try again!",
-          variant: "destructive",
-        });
-      }
+
+      // if (updatedPost === false) {
+      //   return toast({
+      //     title: "please try again!",
+      //     variant: "destructive",
+      //   });
+      // }
+
+      // if (updatedPost !== false) {
+      //   return toast({
+      //     title: "Post updated!",
+      //     variant: "default",
+      //   });
+      // }
+
       return navigate(`/posts/${post.$id}`);
     }
 
@@ -139,9 +147,9 @@ const PostForm = ({
                 <Button variant={"secondary"}>Upload Post</Button>
               ) : (
                 <>
-                  <Button variant={"secondary"}>Update Post</Button>
-                  <Button variant={"destructive"} onClick={() => navigate(-1)}>
-                    Update later
+                  <Button disabled={isUpdatePending} variant={"secondary"}>Update Post</Button>
+                  <Button disabled={isUpdatePending} variant={"destructive"} onClick={() => navigate(-1)}>
+                    Go Back
                   </Button>
                 </>
               )}

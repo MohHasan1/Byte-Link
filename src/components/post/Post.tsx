@@ -28,7 +28,9 @@ const Post = ({ post }: PostProps) => {
     location,
     imageURL: imgurl,
   } = post;
-  const { $id: userId, name, username, imageUrl: userimg } = post?.userId;
+
+  const USER_ID = post?.userId;
+  const { $id: userId, name, username, imageUrl: userimg } = USER_ID;
 
   return (
     <Card className="w-full p-0 md:w-[85%] space-y-4 border-none">
@@ -64,7 +66,7 @@ const Post = ({ post }: PostProps) => {
       >
         <div className="p-4 space-y-6">
           <H4>{title}</H4>
-          <P className="flex flex-wrap overflow-scroll">{dec}</P>
+          <P className="flex flex-wrap">{dec}</P>
         </div>
         <div className="flex justify-center p-0">
           <img

@@ -16,7 +16,7 @@ export type SignInValidationProps = z.infer<typeof SignInValidation>;
 
 export const CreatePostValidation = z.object({
   title: z.string().min(4).max(500),
-  desc: z.string().min(4).max(2200),
+  desc: z.string().min(4).max(2000),
   file: z.custom<File[]>(),
   location: z.string().min(2).max(2200),
   tags: z.string(),

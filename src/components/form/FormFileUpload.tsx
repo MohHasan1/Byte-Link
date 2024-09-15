@@ -83,7 +83,7 @@ const FormFileUpload: FC<FileUploadProps> = (props) => {
                               <Muted>
                                 <ImageUp className="size-28 xl:size-32" />
                               </Muted>
-                              <H4>Drap and Drop Photos here</H4>
+                              <H4>Drag and Drop Photos here</H4>
                               <Lead>
                                 <P>SVG, PNG, JPG, JPEG</P>
                               </Lead>

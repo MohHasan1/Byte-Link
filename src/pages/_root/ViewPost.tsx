@@ -7,7 +7,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
-  useDeletePost,
   useGetetPostById,
 } from "@/lib/react-query/queriesAndMutations";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -19,12 +18,12 @@ import { H4, P } from "@/components/typography/typography";
 import { useAuthctx } from "@/context/AuthCtx";
 import LikePost from "@/components/post/LikePost";
 import InfinitySpinLoader from "@/components/loaders/InfinitySpinLoader";
-
+import { DeletePostAlert } from "@/components/DeletePostAlert";
 
 const ViewPost = () => {
   const { postId } = useParams();
   const { user } = useAuthctx();
-  const { mutate: deletePost, isPending: isDelPen } = useDeletePost();
+  // const { mutate: deletePost, isPending: isDelPen } = useDeletePost();
   const { data: postInfo, isPending } = useGetetPostById(postId!);
   const userInfo: Models.Document = postInfo?.userId;
 
@@ -32,11 +31,11 @@ const ViewPost = () => {
   //   logInfo(postInfo, "usestate");
   // }, [postInfo]);
 
-  const handleDelete = () => {
-    deletePost({ postId: postInfo?.$id!, imageId: postInfo?.imageId! });
-  };
+  // const handleDelete = () => {
+  //   deletePost({ postId: postInfo?.$id!, imageId: postInfo?.imageId! });
+  // };
 
-  if (isPending || isDelPen) {
+  if (isPending) {
     return (
       <div className="flex justify-center items-center mt-10">
         <InfinitySpinLoader />
@@ -72,13 +71,9 @@ const ViewPost = () => {
             <section className=" flex justify-evenly items-center ">
               {userInfo?.$id === user?.id && (
                 <ToolTip tip="Delete the post">
-                  <Link
-                    to={``}
-                    onClick={handleDelete}
-                    className="text-muted-foreground transition-all hover:text-destructive"
-                  >
+                  <DeletePostAlert postInfo={postInfo!}>
                     <Trash2 size={"30"} />
-                  </Link>
+                  </DeletePostAlert>
                 </ToolTip>
               )}
               {userInfo?.$id === user?.id && (
@@ -109,9 +104,7 @@ const ViewPost = () => {
                   className="md:h-[33rem] rounded-md"
                 />
               </div>
-              <P className="flex flex-wrap overflow-scroll p-4">
-                {postInfo?.description}
-              </P>
+              <P className="flex flex-wrap p-4">{postInfo?.description}</P>
             </CardContent>
           </Card>
         </ContentWrapper>
