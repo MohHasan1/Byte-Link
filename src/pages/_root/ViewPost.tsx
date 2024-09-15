@@ -49,7 +49,7 @@ const ViewPost = () => {
         <ContentWrapper>
           <Card>
             <CardHeader className="flex flex-row justify-between items-center p-8">
-              <Link to={`/profile/${userInfo?.$id}`} className="flex gap-4">
+              <Link to={``} className="flex gap-4">
                 <Avatar className="size-12 ring-1 ring-orange-500/50">
                   <AvatarImage src={userInfo?.imageUrl} alt="profile picture" />
                   <AvatarFallback>O</AvatarFallback>
