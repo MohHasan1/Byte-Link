@@ -43,7 +43,7 @@ const AuthCtxProvider = ({ children }: { children: ReactNode }) => {
         navigate("/auth/sign-in");
       }
     }
-  }, []);
+  }, [navigate]);
 
   // idk about this.....
   const checkAuthUser = async () => {

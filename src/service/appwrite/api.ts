@@ -58,7 +58,7 @@ export async function signUpUser(user: SignUpValidationProps) {
 
 export async function saveUserInfo(user: NewUserProps) {
   try {
-    let saveNewUser = await db.createDocument(
+    const saveNewUser = await db.createDocument(
       DB_ID,
       USER_COL_ID,
       ID.unique(),

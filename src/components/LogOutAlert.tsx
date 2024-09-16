@@ -12,6 +12,7 @@ import { useSignOutUser } from "@/lib/react-query/queriesAndMutations";
 import { useNavigate } from "react-router-dom";
 // import { useToast } from "./ui/use-toast";
 import { AlertDialogTitle } from "@radix-ui/react-alert-dialog";
+import { logInfo } from "@/utils/log";
 
 type LogoutProps = {
   children: ReactNode;
@@ -24,8 +25,13 @@ export const LogoutAlert = ({ children, className }: LogoutProps) => {
   // const {toast}= useToast();
 
   useEffect(() => {
+
+    logInfo(isSuccess)
     if (isSuccess) {
       navigate(0);
+    }
+    if (!isSuccess) {
+      navigate("/auth/sign-in");
     }
 
     // toast({
@@ -33,7 +39,7 @@ export const LogoutAlert = ({ children, className }: LogoutProps) => {
     //   variant: "destructive",
     // });
     
-  }, [isSuccess, navigate]);
+  }, [isSuccess, navigate, isError]);
 
   return (
     <AlertDialog>
