@@ -37,28 +37,26 @@ const SignUpForm = () => {
 
   // 2. Define a submit handler.
   async function onSubmit(signUpInfo: SignUpValidationProps) {
-     await handleAsyncOperation(() => signUp(signUpInfo));
+    const newUser = await handleAsyncOperation(() => signUp(signUpInfo));
 
-    // if (!newUser) {
-    //   return toast({
-    //     variant: "destructive",
-    //     title: "Sign up failed. Please try again.",
-    //   });
-    // }
+    if (!newUser) {
+      return;
+    }
 
-    await handleAsyncOperation(() =>
+    const session = await handleAsyncOperation(() =>
       signIn({
         email: signUpInfo.email,
         password: signUpInfo.password,
       })
     );
 
-    // if (!session) {
-    //   return toast({
-    //     variant: "destructive",
-    //     title: "Sigin failed. Please try again.",
-    //   });
-    // }
+    if (!session) {
+      return;
+      // return toast({
+      //   variant: "destructive",
+      //   title: "Sigin failed. Please try again.",
+      // });
+    }
 
     const auth = await checkAuthUser();
 

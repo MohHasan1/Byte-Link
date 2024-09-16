@@ -10,7 +10,7 @@ import {
 import { ReactNode, useEffect } from "react";
 import { useSignOutUser } from "@/lib/react-query/queriesAndMutations";
 import { useNavigate } from "react-router-dom";
-import { useToast } from "./ui/use-toast";
+// import { useToast } from "./ui/use-toast";
 import { AlertDialogTitle } from "@radix-ui/react-alert-dialog";
 
 type LogoutProps = {
@@ -21,19 +21,19 @@ type LogoutProps = {
 export const LogoutAlert = ({ children, className }: LogoutProps) => {
   const { mutate: signOut, isSuccess } = useSignOutUser();
   const navigate = useNavigate();
-  const {toast}= useToast();
+  // const {toast}= useToast();
 
   useEffect(() => {
     if (isSuccess) {
       navigate(0);
     }
 
-    toast({
-      title: "You have logged out!",
-      variant: "destructive",
-    });
+    // toast({
+    //   title: "You have logged out!",
+    //   variant: "destructive",
+    // });
     
-  }, [isSuccess]);
+  }, [isSuccess, navigate]);
 
   return (
     <AlertDialog>
