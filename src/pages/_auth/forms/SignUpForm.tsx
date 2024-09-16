@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Link as LinkIcon } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+// import { useToast } from "@/components/ui/use-toast";
 import {
   useSignUpUser,
   useSigninUser,
@@ -19,7 +19,7 @@ import Agrement from "@/components/AgrementAlert";
 const SignUpForm = () => {
   const navigate = useNavigate();
 
-  const { toast } = useToast();
+  // const { toast } = useToast();
   const { checkAuthUser } = useAuthctx();
   const { mutateAsync: signUp, isPending: signUpPending } = useSignUpUser();
   const { mutateAsync: signIn, isPending: signInPending } = useSigninUser();
@@ -37,37 +37,37 @@ const SignUpForm = () => {
 
   // 2. Define a submit handler.
   async function onSubmit(signUpInfo: SignUpValidationProps) {
-    const newUser = await handleAsyncOperation(() => signUp(signUpInfo));
+     await handleAsyncOperation(() => signUp(signUpInfo));
 
-    if (!newUser) {
-      return toast({
-        variant: "destructive",
-        title: "Sign up failed. Please try again.",
-      });
-    }
+    // if (!newUser) {
+    //   return toast({
+    //     variant: "destructive",
+    //     title: "Sign up failed. Please try again.",
+    //   });
+    // }
 
-    const session = await handleAsyncOperation(() =>
+    await handleAsyncOperation(() =>
       signIn({
         email: signUpInfo.email,
         password: signUpInfo.password,
       })
     );
 
-    if (!session) {
-      return toast({
-        variant: "destructive",
-        title: "Sigin failed. Please try again.",
-      });
-    }
+    // if (!session) {
+    //   return toast({
+    //     variant: "destructive",
+    //     title: "Sigin failed. Please try again.",
+    //   });
+    // }
 
     const auth = await checkAuthUser();
 
     if (auth) {
       // logInfo(newUser);
       form.reset();
-      toast({
-        title: "Welcome to ByteLink.",
-      });
+      // toast({
+      //   title: "Welcome to ByteLink.",
+      // });
       navigate("/");
     }
   }
