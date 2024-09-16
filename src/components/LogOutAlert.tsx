@@ -20,17 +20,17 @@ type LogoutProps = {
 };
 
 export const LogoutAlert = ({ children, className }: LogoutProps) => {
-  const { mutate: signOut, isSuccess } = useSignOutUser();
+  const { mutate: signOut, isSuccess, error } = useSignOutUser();
   const navigate = useNavigate();
   // const {toast}= useToast();
 
   useEffect(() => {
 
-    logInfo(isSuccess)
+    // logInfo(error)
     if (isSuccess) {
       navigate(0);
     }
-    if (!isSuccess) {
+    else if (!isSuccess && error) {
       navigate("/auth/sign-in");
     }
 
@@ -39,7 +39,7 @@ export const LogoutAlert = ({ children, className }: LogoutProps) => {
     //   variant: "destructive",
     // });
     
-  }, [isSuccess, navigate]);
+  }, [error, isSuccess, navigate]);
 
   return (
     <AlertDialog>
