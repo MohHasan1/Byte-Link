@@ -39,7 +39,7 @@ export const LogoutAlert = ({ children, className }: LogoutProps) => {
     //   variant: "destructive",
     // });
     
-  }, [isSuccess, navigate, isError]);
+  }, [isSuccess, navigate]);
 
   return (
     <AlertDialog>
