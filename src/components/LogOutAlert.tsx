@@ -12,7 +12,7 @@ import { useSignOutUser } from "@/lib/react-query/queriesAndMutations";
 import { useNavigate } from "react-router-dom";
 // import { useToast } from "./ui/use-toast";
 import { AlertDialogTitle } from "@radix-ui/react-alert-dialog";
-import { logInfo } from "@/utils/log";
+// import { logInfo } from "@/utils/log";
 
 type LogoutProps = {
   children: ReactNode;
