@@ -8,20 +8,35 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Button } from "./ui/button";
+import { useState } from "react";
+import { SquareX } from "lucide-react";
 
 const Agreement = ({ showAlert = false }: { showAlert?: boolean }) => {
+  const [isOpen, setIsOpen] = useState(showAlert);
   return (
     <>
-      <AlertDialog defaultOpen={showAlert}>
+      <AlertDialog open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
         <AlertDialogTrigger>Show Rules</AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-red-700 text-sm md:text-lg text-center">IMPORTANT!</AlertDialogTitle>
+            <AlertDialogTitle className="text-red-700 text-sm md:text-lg text-center">
+              IMPORTANT!
+            </AlertDialogTitle>
             <AlertDialogDescription>
-              <div className="sm:p-4 max-h-dvh" >
-                <h1 className="text-lg md:text-2xl font-bold mb-4">
-                  Byte-Link Usage Rules
-                </h1>
+              <div className="sm:p-4 max-h-dvh overflow-auto">
+                <div className="flex justify-between items-center text-xl">
+                  <h1 className="text-lg md:text-2xl font-bold mb-4 text-blue-500">
+                    Byte-Link Usage Rules
+                  </h1>
+                  <Button
+                    variant={"ghost"}
+                    className="text-xl text-red-600"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <SquareX />
+                  </Button>
+                </div>
                 <ul className="list-disc text-xs sm:text-lg space-y-2">
                   <li>
                     No inappropriate pictures, titles, or descriptions. Uploaded
@@ -58,7 +73,7 @@ const Agreement = ({ showAlert = false }: { showAlert?: boolean }) => {
                   </li>
                 </ul>
                 <div className="mt-6 font-semibold">
-                  For any questions or feedback, email me at{" "}
+                  For any questions or feedback, email me at
                   <a
                     href="mailto:user.hasan@outlook.com"
                     className="text-blue-500 hover:underline"
