@@ -5,18 +5,18 @@ import { Link as LinkIcon } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useSigninUser } from "@/lib/react-query/queriesAndMutations";
-// import { useToast } from "@/components/ui/use-toast";
-import { useAuthctx } from "@/context/AuthCtx";
 import FormInputField from "@/components/form/FormInputField";
-import { H2, H4, Lead, P } from "@/components/typography/typography";
+import { H4, Lead, P } from "@/components/typography/typography";
 import { SignInValidation, SignInValidationProps } from "@/lib/zod/validation";
-import { handleAsyncOperation } from "@/utils/handleOperations";
+import {
+  handleAsyncAppwrite,
+  handleAsyncOperation,
+} from "@/utils/handleOperations";
+import { toast } from "sonner";
+import { account } from "@/service/appwrite/config";
 
 const SignInForm = () => {
   const navigate = useNavigate();
-
-  const { checkAuthUser } = useAuthctx();
-  // const { toast } = useToast();
   const { mutateAsync: signIn, isPending } = useSigninUser();
 
   // 1. Define your form.
@@ -30,34 +30,48 @@ const SignInForm = () => {
 
   // 2. Define a submit handler.
   async function onSubmit(values: SignInValidationProps) {
-    await handleAsyncOperation(() =>
+    // handleAsyncOperation is not really needed as tanstack takes care of it //
+    let session = await handleAsyncAppwrite(() =>
       signIn({
         email: values.email,
         password: values.password,
       })
     );
 
-    // if (!session) {
-    //   return toast({
-    //     variant: "destructive",
-    //     title: "Sign-in failed. Please try again.",
-    //   });
-    // }
+    // handle user_session_already_exists //
+    if (session === "user_session_already_exists") {
+      await handleAsyncOperation(() => account.deleteSession("current"));
+      localStorage.removeItem("cookieFallback");
+      session = await handleAsyncAppwrite(() =>
+        signIn({
+          email: values.email,
+          password: values.password,
+        })
+      );
+    }
 
-    // we are using toast inside the function so its not triggeed.
-    const auth = await checkAuthUser();
+    // handle user_invalid_credentials //
+    if (session === "user_invalid_credentials") {
+      toast.error("Invalid credentials.");
+      return;
+    }
 
-    if (auth) {
+    // success //
+    if (typeof session !== "string") {
+      // If session is not a string, assume it is a valid session object
+      toast.info("Welcome to Byte-Link.");
       form.reset();
       navigate("/");
+    } else {
+      toast.error("An unexpected error occurred. Please try again.");
     }
   }
 
   return (
     <>
       <div className="flex justify-center items-center gap-4 text-blue-500">
-        <LinkIcon />
-        <H2>ByteLink</H2>
+        <LinkIcon size={30} />
+        <h1 className="font-qsand text-2xl">ByteLink</h1>
       </div>
 
       <H4 className="mt-3">Sign In To Your Account</H4>
@@ -84,12 +98,7 @@ const SignInForm = () => {
             autoComplete="current-password"
           />
 
-          <Button
-            disabled={isPending}
-            variant="secondary"
-            type="submit"
-            className="w-full mt-8"
-          >
+          <Button disabled={isPending} type="submit" className="w-full mt-8">
             link In!
           </Button>
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AppwriteException } from "appwrite";
 
 export function logError(...errors: any[]) {

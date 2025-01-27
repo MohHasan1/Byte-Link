@@ -12,12 +12,14 @@ import { Button } from "./ui/button";
 import { useState } from "react";
 import { SquareX } from "lucide-react";
 
-const Agreement = ({ showAlert = false }: { showAlert?: boolean }) => {
+const AgreementAlert = ({ showAlert = false }: { showAlert?: boolean }) => {
   const [isOpen, setIsOpen] = useState(showAlert);
   return (
     <>
       <AlertDialog open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
-        <AlertDialogTrigger>Show Rules</AlertDialogTrigger>
+        <AlertDialogTrigger asChild>
+          <Button size={"sm"} variant={"secondary"}>Rulez? Meh!</Button>
+        </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle className="text-red-700 text-sm md:text-lg text-center">
@@ -27,7 +29,7 @@ const Agreement = ({ showAlert = false }: { showAlert?: boolean }) => {
               <div className="sm:p-4 max-h-dvh overflow-auto">
                 <div className="flex justify-between items-center text-xl">
                   <h1 className="text-lg md:text-2xl font-bold mb-4 text-blue-500">
-                    Byte-Link Usage Rules
+                    Don’t Break the Internet – Read This!
                   </h1>
                   <Button
                     variant={"ghost"}
@@ -57,12 +59,6 @@ const Agreement = ({ showAlert = false }: { showAlert?: boolean }) => {
                     strictly prohibited.
                   </li>
                   <li>
-                    Your password is securely hashed using Appwrite's Hash365,
-                    based on the SHA-512 algorithm, ensuring strong encryption.
-                    Your email is also protected.
-                  </li>
-
-                  <li>
                     This is a testing phase of the MVP (Minimum Viable Product).
                     Enjoy using the platform as it is, and keep in mind that it
                     is subject to change.
@@ -73,7 +69,7 @@ const Agreement = ({ showAlert = false }: { showAlert?: boolean }) => {
                   </li>
                 </ul>
                 <div className="mt-6 font-semibold">
-                  For any questions or feedback, email me at
+                  For any questions or feedback, email me at{" "}
                   <a
                     href="mailto:user.hasan@outlook.com"
                     className="text-blue-500 hover:underline"
@@ -94,4 +90,4 @@ const Agreement = ({ showAlert = false }: { showAlert?: boolean }) => {
   );
 };
 
-export default Agreement;
+export default AgreementAlert;

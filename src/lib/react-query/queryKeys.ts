@@ -3,9 +3,11 @@ export enum QUERY_KEYS {
   CREATE_USER_ACCOUNT = "createUserAccount",
 
   // USER KEYS
+  CHECK_IF_USER_lOGGED_IN = "CHECK_IF_USER_lOGGED_IN",
   GET_CURRENT_USER = "getCurrentUser",
   GET_USERS = "getUsers",
   GET_USER_BY_ID = "getUserById",
+
 
   // POST KEYS
   RECENT_POSTS_KEY = "getRecentPosts",
@@ -15,11 +17,10 @@ export enum QUERY_KEYS {
   GET_USER_POSTS = "getUserPosts",
   GET_FILE_PREVIEW = "getFilePreview",
 
-
   //  SEARCH KEYS
   SEARCH_POSTS = "getSearchPosts",
 
-/////////////////////////////
+  /////////////////////////////
   POST_KEY = "POSTS",
   SAVED_POSTS_KEY = "SAVED_POSTS",
 }

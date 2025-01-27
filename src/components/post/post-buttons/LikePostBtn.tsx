@@ -1,46 +1,49 @@
-import { HandHeart } from "lucide-react";
-import ToolTip from "../ToolTip";
-import { P } from "../typography/typography";
-import PostButton from "./PostButton";
-import { useEffect, useState } from "react";
+import InfinitySpinLoader from "@/components/loaders/InfinitySpinLoader";
+import ToolTip from "@/components/ToolTip";
+import { P } from "@/components/typography/typography";
 import { useAuthctx } from "@/context/AuthCtx";
-import { Models } from "appwrite";
 import { useLikePost } from "@/lib/react-query/queriesAndMutations";
-import InfinitySpinLoader from "../loaders/InfinitySpinLoader";
+import { Models } from "appwrite";
+import { HandHeart } from "lucide-react";
+import { useState, useEffect } from "react";
+import PostButtonWrapper from "./PostButtonWrapper";
 
-const LikePost = ({ postInfo }: { postInfo: Models.Document }) => {
+const LikePostBtn = ({ postInfo }: { postInfo: Models.Document }) => {
   const { user } = useAuthctx();
+
   const { mutate: likePost, isPending } = useLikePost();
   const [userLikedId, setUserLikedId] = useState<string[]>([]);
 
-
-  const userLikes: string[] =
-    postInfo?.userLikedId?.map((user: Models.Document) => user?.$id) ?? [];
-
   useEffect(() => {
+    const userLikes: string[] =
+      postInfo?.userLikedId?.map((user: Models.Document) => user?.$id) ?? [];
+      
     setUserLikedId(userLikes);
   }, [postInfo]);
+
+  if (!user) return  <InfinitySpinLoader size={50} />;
 
   const handleLikePost = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (!user || !postInfo) return;
 
     let updatedUserLikedId: string[];
-    if (userLikedId?.includes(user?.id!)) {
+    if (userLikedId?.includes(user?.id)) {
       updatedUserLikedId = userLikedId?.filter(
         (userId: string) => userId != user?.id
       );
       setUserLikedId(updatedUserLikedId);
     } else {
-      updatedUserLikedId = [...userLikedId!, user?.id!];
+      updatedUserLikedId = [...userLikedId!, user?.id];
       setUserLikedId(updatedUserLikedId);
     }
 
-    likePost({ postId: postInfo?.$id!, likesArray: updatedUserLikedId! });
+    likePost({ postId: postInfo?.$id, likesArray: updatedUserLikedId! });
   };
+
   return (
-    <PostButton
-      liked={userLikedId.includes(user?.id!)}
+    <PostButtonWrapper
+      liked={userLikedId.includes(user?.id)}
       onClick={handleLikePost}
     >
       <ToolTip tip="Show some love to the post">
@@ -54,8 +57,8 @@ const LikePost = ({ postInfo }: { postInfo: Models.Document }) => {
           )}
         </div>
       </ToolTip>
-    </PostButton>
+    </PostButtonWrapper>
   );
 };
 
-export default LikePost;
+export default LikePostBtn;

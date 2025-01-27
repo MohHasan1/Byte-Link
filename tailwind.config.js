@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   fontFamily: {
@@ -20,6 +21,9 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        qsand: ['Quicksand', 'sans-serif'],
+      },
       colors: {
         logo: "hsl(var(--logo))",
         border: "hsl(var(--border))",

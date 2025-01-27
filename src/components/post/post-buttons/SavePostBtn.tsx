@@ -1,17 +1,16 @@
 import React, { type FC, useEffect, useState } from "react";
-import PostButton from "./PostButton";
+import PostButton from "./PostButtonWrapper";
 import { useAuthctx } from "@/context/AuthCtx";
 import {
   useSavePost,
   useDeleteSavedPost,
 } from "@/lib/react-query/queriesAndMutations";
 import { FileHeart } from "lucide-react";
-import ToolTip from "../ToolTip";
-import InfinitySpinLoader from "../loaders/InfinitySpinLoader";
+import ToolTip from "../../ToolTip";
+import InfinitySpinLoader from "../../loaders/InfinitySpinLoader";
 import { Models } from "appwrite";
 
-
-const SavePost: FC<SavePostProps> = ({ postInfo }) => {
+const SavePostBtn: FC<SavePostProps> = ({ postInfo }) => {
   const { user } = useAuthctx();
   const { mutate: savePost, isPending: savePen } = useSavePost();
   const { mutate: deleteSavedPost, isPending: delPen } = useDeleteSavedPost();
@@ -26,20 +25,22 @@ const SavePost: FC<SavePostProps> = ({ postInfo }) => {
     if (savedUser) {
       setIsSaved(true);
     }
-  }, [postInfo]);
+  }, [postInfo, savedUser]);
+
+  if (!user) return <InfinitySpinLoader size={50} />;
 
   const handleSavePost = async (e: React.MouseEvent) => {
     e.stopPropagation();
+    if (!savedUser) return;
 
     if (isSaved) {
       setIsSaved(false);
-      deleteSavedPost({ postId: savedUser?.$id! });
+      deleteSavedPost({ postId: savedUser?.$id });
     } else {
       setIsSaved(true);
-      savePost({ postId: postInfo?.$id, userId: user?.id! })!;
+      savePost({ postId: postInfo?.$id, userId: user?.id })!;
     }
   };
-
 
   return (
     <PostButton saved={isSaved} onClick={handleSavePost}>
@@ -56,7 +57,7 @@ const SavePost: FC<SavePostProps> = ({ postInfo }) => {
   );
 };
 
-export default SavePost;
+export default SavePostBtn;
 
 type SavePostProps = {
   postInfo: Models.Document;

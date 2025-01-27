@@ -1,3 +1,5 @@
+// Logged-in User profile Info (Must be wrapped around with AuthCtxProvider)
+
 import { Lead, Small, Muted } from "../typography/typography";
 import { useAuthctx } from "@/context/AuthCtx";
 
@@ -5,6 +7,7 @@ const UserProfileInfo = ({
   showName = true,
   showEmail = true,
 }: UserProfileInfoProps) => {
+  
   const { user } = useAuthctx();
 
   return (

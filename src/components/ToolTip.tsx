@@ -18,7 +18,7 @@ export default function ToolTip({
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
-            <div className="w-full ">{children}</div>
+            <div className="w-full">{children}</div>
           </TooltipTrigger>
           <TooltipContent>
             <p>{tip}</p>

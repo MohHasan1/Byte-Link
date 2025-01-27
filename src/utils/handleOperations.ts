@@ -1,6 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { AppwriteException } from "appwrite";
 import { logCustomError } from "./log";
 
-export const handleAsyncOperation: HandleAsyncOperationProps = async (operationFn) => {
+export const handleAsyncOperation: HandleAsyncOperationProps = async (
+  operationFn
+) => {
   try {
     return await operationFn();
   } catch (error) {
@@ -9,9 +13,24 @@ export const handleAsyncOperation: HandleAsyncOperationProps = async (operationF
   }
 };
 
-type operationFnProps = (...arg: any) => Promise<any>;
+export const handleAsyncAppwrite: HandleAsyncAppwrite = async (operationFn) => {
+  try {
+    return await operationFn();
+  } catch (error) {
+    logCustomError(error);
 
-type HandleAsyncOperationProps = (operationFn: operationFnProps) => Promise<any> | false;
+    const appwriteError = error as AppwriteException;
+    return appwriteError.type;
+  }
+};
+
+type operationFnProps = (...arg: any) => Promise<any>;
+type HandleAsyncOperationProps = (
+  operationFn: operationFnProps
+) => Promise<any> | false;
+type HandleAsyncAppwrite = (
+  operationFn: operationFnProps
+) => Promise<any> | string;
 
 /*
 This function take a callnack function and handle exceptions.

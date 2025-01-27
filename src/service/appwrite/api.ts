@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   account,
   avatars,
@@ -19,6 +20,18 @@ import { NewPostProps, UpdatePostProps } from "@/types/postTypes";
 import { throwError } from "@/utils/throwError";
 
 //--------------------------------Auth-------------------------------------//
+
+export async function checkIfUserLoggedIn() {
+  try {
+    await account.get();
+    // const user = await account.get();
+    // logInfo("User is logged in:", user);
+    return true;
+  } catch {
+    // logInfo("User is not logged in:");
+    return false;
+  }
+}
 
 /*
 Note: 
@@ -175,9 +188,9 @@ export async function getRecentPosts() {
   try {
     const recentPosts = await db.listDocuments(DB_ID, POST_COL_ID, [
       Query.orderDesc("$createdAt"),
-      Query.limit(20),
+      // Query.limit(20),
     ]);
-
+    // logInfo(recentPosts)
     return recentPosts;
   } catch (error) {
     throw throwError(error);

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-refresh/only-export-components */
 import { useGetRecentPosts } from "@/lib/react-query/queriesAndMutations";
 import { createContext, ReactNode, useContext, useState } from "react";
 
@@ -27,7 +29,7 @@ const PostCtx = createContext<any | undefined>(undefined);
 export const usePostCtx = () => {
   const ctx = useContext(PostCtx);
   if (!ctx) {
-    throw new Error("useAuthctx must be used with in AuthCtxProvider");
+    throw new Error("useAuthctx must be used with in LikePostCtxProvider");
   }
   return ctx;
 };

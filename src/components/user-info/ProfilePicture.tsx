@@ -1,3 +1,4 @@
+// Logged-in User profile picture (Must be wrapped around with AuthCtxProvider)
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuthctx } from "@/context/AuthCtx";
 

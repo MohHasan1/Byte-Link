@@ -1,17 +1,16 @@
 
-import { Toaster } from "@/components/ui/toaster";
-import { Outlet, Navigate } from "react-router-dom";
+import AuthCtxProvider from "@/context/AuthCtx";
+import { Outlet } from "react-router-dom";
 
 const AuthLayout = () => {
-  const isAuthenticated = false;
+  // const isAuthenticated = false;
 
   return (
     <>
-      {isAuthenticated && <Navigate to="/" />}
-      {!isAuthenticated && (
-        <main className="h-screen flex">
-          <Toaster />
-          <section className="flex flex-col flex-1 justify-center items-center p-10">
+      {/* {isAuthenticated && <Navigate to="/" />} */}
+      <AuthCtxProvider>
+        <main className="h-dvh flex  font-qsand">
+          <section className="flex flex-col flex-1 justify-center items-center p-10 overflow-y-auto">
             <Outlet />
           </section>
           <img
@@ -20,7 +19,7 @@ const AuthLayout = () => {
             className="hidden xl:block h-full w-1/2 object-cover bg-no-repeat"
           />
         </main>
-      )}
+      </AuthCtxProvider>
     </>
   );
 };

@@ -15,7 +15,6 @@ import {
 } from "@/lib/react-query/queriesAndMutations";
 import { useAuthctx } from "@/context/AuthCtx";
 import { useNavigate } from "react-router-dom";
-import { useToast } from "@/components/ui/use-toast";
 import { Models } from "appwrite";
 import { handleAsyncOperation } from "@/utils/handleOperations";
 import InfinitySpinLoader from "@/components/loaders/InfinitySpinLoader";
@@ -40,15 +39,14 @@ const PostForm = ({
   });
 
   const { mutateAsync: createPost, isPending } = useCreatePost();
-  const { mutateAsync: updatePost, isPending:isUpdatePending } = useUpdatePost();
+  const { mutateAsync: updatePost, isPending: isUpdatePending } =
+    useUpdatePost();
   const { user } = useAuthctx();
-
   const navigate = useNavigate();
-  const { toast } = useToast();
 
   // 2. Define a submit handler.
   async function onSubmit(postInfo: CPostValidationProps) {
-    // logInfo(postInfo);
+    if (!user) return;
 
     if (post && action == "update") {
       await handleAsyncOperation(() =>
@@ -59,37 +57,22 @@ const PostForm = ({
           imageUrl: post.imageURL,
         })
       );
-
-      // if (updatedPost === false) {
-      //   return toast({
-      //     title: "please try again!",
-      //     variant: "destructive",
-      //   });
-      // }
-
-      // if (updatedPost !== false) {
-      //   return toast({
-      //     title: "Post updated!",
-      //     variant: "default",
-      //   });
-      // }
-
       return navigate(`/posts/${post.$id}`);
     }
 
-    const newPost = await handleAsyncOperation(() =>
+    await handleAsyncOperation(() =>
       createPost({
         ...postInfo,
-        userId: user?.id!,
+        userId: user?.id,
       })
     );
 
-    if (!newPost) {
-      return toast({
-        title: "please try again!",
-        variant: "destructive",
-      });
-    }
+    // if (!newPost) {
+    //   return toast({
+    //     title: "please try again!",
+    //     variant: "destructive",
+    //   });
+    // }
 
     return navigate("/");
   }
@@ -147,8 +130,14 @@ const PostForm = ({
                 <Button variant={"secondary"}>Upload Post</Button>
               ) : (
                 <>
-                  <Button disabled={isUpdatePending} variant={"secondary"}>Update Post</Button>
-                  <Button disabled={isUpdatePending} variant={"destructive"} onClick={() => navigate(-1)}>
+                  <Button disabled={isUpdatePending} variant={"secondary"}>
+                    Update Post
+                  </Button>
+                  <Button
+                    disabled={isUpdatePending}
+                    variant={"destructive"}
+                    onClick={() => navigate(-1)}
+                  >
                     Go Back
                   </Button>
                 </>

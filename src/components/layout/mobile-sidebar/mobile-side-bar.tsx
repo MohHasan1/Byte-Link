@@ -8,8 +8,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import SideBarHeader from "./side-bar-header";
-import SideBarLinks from "./side-bar-links";
+import SideBarHeader from "../sidebar-common/side-bar-header";
+import SideBarLinks from "../desktop-sidebar/side-bar-links";
+
 
 const MobileSideBar = () => {
   return (
@@ -17,7 +18,7 @@ const MobileSideBar = () => {
       <Sheet>
         <SheetTrigger asChild>
           <Button variant="ghost" size="icon" className="shrink-0 xl:hidden">
-            <Menu className="h-5 w-5" />
+            <Menu className="h-5 w-5 text-blue-300" />
             <span className="sr-only">Toggle navigation menu</span>
           </Button>
         </SheetTrigger>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   signUpUser,
   signInUser,
@@ -11,6 +12,7 @@ import {
   getPostById,
   updatePost,
   deletePostByID,
+  checkIfUserLoggedIn,
 } from "@/service/appwrite/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { SignUpValidationProps } from "../zod/validation";
@@ -35,6 +37,14 @@ export function useSignOutUser() {
   return useMutation({
     mutationFn: signOutUser,
   });
+}
+
+export function useCheckIfUserLoggedIn() {
+  return useQuery({
+    queryKey: [QUERY_KEYS.CHECK_IF_USER_lOGGED_IN],
+    queryFn: checkIfUserLoggedIn,
+    staleTime: 5000,
+  })
 }
 
 // Post //
@@ -125,7 +135,7 @@ export const useGetSavedPosts = (postId: string) => {
 };
 
 // __ Get Post By Id __ //
-export const useGetetPostById = (postId: string) => {
+export const useGetPostById = (postId: string) => {
   return useQuery({
     queryKey: [QUERY_KEYS.POST_KEY, postId],
     queryFn: () => getPostById(postId),

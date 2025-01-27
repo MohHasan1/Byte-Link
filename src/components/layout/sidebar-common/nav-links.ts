@@ -1,11 +1,11 @@
-import { House, BadgePlus, CircleUser } from "lucide-react";
+import { House, BadgePlus, CircleUser, LucideProps } from "lucide-react";
 
-export const NAVLINKS = [
+export const NAV_LINKS = [
   {
     id: 0,
     label: "Home",
     route: "/",
-    icon: <House />,
+    icon: House,
   },
   // {
   //   id: 1,
@@ -29,20 +29,21 @@ export const NAVLINKS = [
     id: 4,
     label: "Create",
     route: "/create-post",
-    icon: <BadgePlus />,
+    icon: BadgePlus,
   },
   {
     id: 5,
-    label: "Contact Info",
+    label: "Contact",
     route: "/contact-admin",
-    icon: <CircleUser />,
+    icon: CircleUser,
   },
-
 ];
 
 export type linkProps = {
   id: number;
   label: string;
   route: string;
-  icon: JSX.Element;
+  icon: React.ForwardRefExoticComponent<
+    Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>
+  >;
 };

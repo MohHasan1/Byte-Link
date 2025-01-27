@@ -3,24 +3,25 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Link as LinkIcon } from "lucide-react";
-// import { useToast } from "@/components/ui/use-toast";
 import {
   useSignUpUser,
   useSigninUser,
 } from "@/lib/react-query/queriesAndMutations";
-import { useAuthctx } from "@/context/AuthCtx";
 import { Link, useNavigate } from "react-router-dom";
 import FormInputField from "@/components/form/FormInputField";
 import { H2, H4, Lead, P } from "@/components/typography/typography";
 import { SignUpValidationProps, SignUpValidation } from "@/lib/zod/validation";
-import { handleAsyncOperation } from "@/utils/handleOperations";
-import Agrement from "@/components/AgrementAlert";
+import {
+  handleAsyncAppwrite,
+  handleAsyncOperation,
+} from "@/utils/handleOperations";
+import AgreementAlert from "@/components/AgrementAlert";
+import { toast } from "sonner";
+import { account } from "@/service/appwrite/config";
 
 const SignUpForm = () => {
   const navigate = useNavigate();
 
-  // const { toast } = useToast();
-  const { checkAuthUser } = useAuthctx();
   const { mutateAsync: signUp, isPending: signUpPending } = useSignUpUser();
   const { mutateAsync: signIn, isPending: signInPending } = useSigninUser();
 
@@ -37,36 +38,48 @@ const SignUpForm = () => {
 
   // 2. Define a submit handler.
   async function onSubmit(signUpInfo: SignUpValidationProps) {
+    // ----- sign up ------ //
     const newUser = await handleAsyncOperation(() => signUp(signUpInfo));
 
-    if (!newUser) {
+    if (newUser === false) {
+      toast.error("Sign-up failed! Please try again.");
       return;
     }
 
-    const session = await handleAsyncOperation(() =>
+    // ----- sign in ------ //
+    let session = await handleAsyncAppwrite(() =>
       signIn({
         email: signUpInfo.email,
         password: signUpInfo.password,
       })
     );
 
-    if (!session) {
-      return;
-      // return toast({
-      //   variant: "destructive",
-      //   title: "Sigin failed. Please try again.",
-      // });
+    // handle user_session_already_exists //
+    if (session === "user_session_already_exists") {
+      await handleAsyncOperation(() => account.deleteSession("current"));
+      localStorage.removeItem("cookieFallback");
+      session = await handleAsyncAppwrite(() =>
+        signIn({
+          email: signUpInfo.email,
+          password: signUpInfo.password,
+        })
+      );
     }
 
-    const auth = await checkAuthUser();
+    // handle user_invalid_credentials //
+    if (session === "user_invalid_credentials") {
+      toast.error("Invalid credentials.");
+      return;
+    }
 
-    if (auth) {
-      // logInfo(newUser);
+    // success //
+    if (typeof session !== "string") {
+      // If session is not a string, assume it is a valid session object
+      toast.info("Welcome to Byte-Link.");
       form.reset();
-      // toast({
-      //   title: "Welcome to ByteLink.",
-      // });
       navigate("/");
+    } else {
+      toast.error("An unexpected error occurred. Please try again.");
     }
   }
 
@@ -116,7 +129,6 @@ const SignUpForm = () => {
 
             <Button
               disabled={signUpPending || signInPending}
-              variant="secondary"
               type="submit"
               className="w-full mt-8"
             >
@@ -133,10 +145,10 @@ const SignUpForm = () => {
             </Lead>
           </form>
         </Form>
-      </section>
 
-      <section className="text-blue-400 hover:text-blue-300">
-        <Agrement showAlert={true} />
+        <section className="text-blue-400 hover:text-blue-300">
+          <AgreementAlert showAlert={true} />
+        </section>
       </section>
     </>
   );

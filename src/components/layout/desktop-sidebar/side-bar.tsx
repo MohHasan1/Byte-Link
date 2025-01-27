@@ -1,4 +1,4 @@
-import SideBarHeader from "./side-bar-header";
+import SideBarHeader from "../sidebar-common/side-bar-header";
 import SideBarLinks from "./side-bar-links";
 import { Card } from "@/components/ui/card";
 

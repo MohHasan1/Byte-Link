@@ -1,7 +1,10 @@
-import { ReactNode, type FC } from "react";
-import { Button } from "../ui/button";
+// Post Button Wrapper for save and like post (idk why I made this (6 months ago) lol) //
 
-const PostButton: FC<PostButtonProps> = ({
+import { Button } from "@/components/ui/button";
+import { type ReactNode, type FC } from "react";
+
+
+const PostButtonWrapper: FC<PostButtonProps> = ({
   children,
   liked,
   saved,
@@ -20,7 +23,7 @@ const PostButton: FC<PostButtonProps> = ({
   );
 };
 
-export default PostButton;
+export default PostButtonWrapper;
 
 interface PostButtonProps {
   children: ReactNode;

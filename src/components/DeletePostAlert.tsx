@@ -1,4 +1,4 @@
-//use react-toastify
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -28,7 +28,7 @@ export const DeletePostAlert = ({ children, className, postInfo }: Props) => {
     isSuccess,
   } = useDeletePost();
   const navigate = useNavigate();
-  //   const { toast } = useToast();
+ 
 
   const handleDelete = () => {
     // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
@@ -37,17 +37,8 @@ export const DeletePostAlert = ({ children, className, postInfo }: Props) => {
 
   useEffect(() => {
     if (isSuccess) {
-      //   toast({
-      //     title: "Your post has been deleted",
-      //     variant: "destructive",
-      //   });
       navigate(0);
     }
-
-    // toast({
-    //   title: "Error deleting your post.",
-    //   variant: "destructive",
-    // });
   }, [isSuccess, navigate]);
 
   if (isDelPen) {

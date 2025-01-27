@@ -1,6 +1,7 @@
+/* eslint-disable react-refresh/only-export-components */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { getCurrentUser } from "@/service/appwrite/api";
 import { CurrentUserProps } from "@/types/userType";
-
 import { Models } from "appwrite";
 import {
   createContext,
@@ -16,7 +17,7 @@ const AuthCtx = createContext<AuthCtxProps | undefined>(undefined);
 export const useAuthctx = () => {
   const ctx = useContext(AuthCtx);
   if (!ctx) {
-    throw new Error("useAuthctx must be used with in AuthCtxProvider");
+    throw new Error("useAuthctx must be used within AuthCtxProvider");
   }
   return ctx;
 };
@@ -35,21 +36,18 @@ const AuthCtxProvider = ({ children }: { children: ReactNode }) => {
       localStorage.getItem("cookieFallback") === "[]" ||
       localStorage.getItem("cookieFallback") === null
     ) {
-      navigate("/auth/sign-in");
+      // navigate("/auth/sign-in");
+      // localStorage.removeItem("cookieFallback");
     } else {
-      const isauth = checkAuthUser();
-      if (!isauth) {
-        localStorage.removeItem("cookieFallback"); // remove any cookie if any (safety)
-        navigate("/auth/sign-in");
+      if (!user) {
+        checkAuthUser();
       }
     }
   }, [navigate]);
 
-  // idk about this.....
   const checkAuthUser = async () => {
     try {
       const currentAccount = await getCurrentUser();
-
       if (currentAccount) {
         setUser({
           id: currentAccount.$id,
@@ -62,12 +60,21 @@ const AuthCtxProvider = ({ children }: { children: ReactNode }) => {
         setIsAuth(true);
         setLoggedInUser(currentAccount);
         return true;
+      } else {
+        handleLogout();
+        return false;
       }
-
-      return false;
     } catch (error) {
+      console.error("Error checking user:", error);
+      handleLogout();
       return false;
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("cookieFallback");
+    setIsAuth(false);
+    navigate("/auth/sign-in");
   };
 
   const ctxValue = {
@@ -78,6 +85,7 @@ const AuthCtxProvider = ({ children }: { children: ReactNode }) => {
     setIsAuth,
     checkAuthUser,
   };
+
   return <AuthCtx.Provider value={ctxValue}>{children}</AuthCtx.Provider>;
 };
 
