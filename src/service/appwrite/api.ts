@@ -187,11 +187,26 @@ export async function deleteFile(fileId: string) {
 export async function getRecentPosts() {
   try {
     const recentPosts = await db.listDocuments(DB_ID, POST_COL_ID, [
-      Query.orderDesc("$createdAt"),
+      Query.orderDesc("$updatedAt"),
       // Query.limit(20),
     ]);
-    // logInfo(recentPosts)
     return recentPosts;
+  } catch (error) {
+    throw throwError(error);
+  }
+}
+
+// __ Paginated Fetching Function __ //
+export async function getPaginatedPosts({ pageParam }: { pageParam?: string }) {
+  // we are using appwrite cursor to paginate - specifically post id, (we need to pass last post id, so it can continue after)
+  
+  const queries: string[] = [Query.orderDesc("$createdAt"), Query.limit(10)];
+  if (pageParam) queries.push(Query.cursorAfter(pageParam));
+
+  try {
+    const paginatedPosts = await db.listDocuments(DB_ID, POST_COL_ID, queries);
+    if (!paginatedPosts) throw new Error("Failed to fetch posts");
+    return paginatedPosts;
   } catch (error) {
     throw throwError(error);
   }

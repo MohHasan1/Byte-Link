@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { type FC, useCallback, useState } from "react";
 import Dropzone from "react-dropzone";
@@ -29,10 +30,9 @@ const FormFileUpload: FC<FileUploadProps> = (props) => {
 
   const onDrop: onDropProps = useCallback(
     (acceptedFiles, field) => {
-
+      if (!file) return;
       setFile(acceptedFiles);
       field.onChange(acceptedFiles);
-
       setFileUrl(URL.createObjectURL(acceptedFiles[0]));
     },
     [file]
@@ -68,6 +68,7 @@ const FormFileUpload: FC<FileUploadProps> = (props) => {
                               src={fileUrl}
                               alt="Uploaded file preview"
                               className="h-full"
+                              loading="lazy"
                             />
                           </div>
                           <Muted className="border-t w-full text-center p-2">
@@ -98,10 +99,10 @@ const FormFileUpload: FC<FileUploadProps> = (props) => {
                                 <img
                                   src={imageUrl}
                                   alt="Uploaded file preview"
-                                  className="h-full"
+                                  className="h-full w-full object-cover"
                                 />
                               </div>
-                              <Muted className="border-t w-full text-center p-2">
+                              <Muted className="border-t rounded-xl text-center p-2">
                                 <P>Drop or Click to update the image.</P>
                               </Muted>
                             </>

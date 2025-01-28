@@ -68,6 +68,7 @@ const ViewPost = () => {
                   src={postInfo?.imageURL}
                   alt="post image"
                   className="md:h-[33rem] rounded-md"
+                  loading="lazy" 
                 />
               </div>
               <P className="flex flex-wrap p-4 font-qsand backdrop-blur-lg bg-black/20 rounded-b-xl">{postInfo?.description}</P>

@@ -15,6 +15,7 @@ const AuthLayout = () => {
             src="/assets/images/cat1.jpg"
             alt="Authentication image"
             className="hidden xl:block h-full w-1/2 object-cover bg-no-repeat"
+            loading="lazy" 
           />
         </main>
       {/* </AuthCtxProvider> */}
