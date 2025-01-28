@@ -1,5 +1,3 @@
-
-import AuthCtxProvider from "@/context/AuthCtx";
 import { Outlet } from "react-router-dom";
 
 const AuthLayout = () => {
@@ -8,7 +6,7 @@ const AuthLayout = () => {
   return (
     <>
       {/* {isAuthenticated && <Navigate to="/" />} */}
-      <AuthCtxProvider>
+      {/* <AuthCtxProvider> */}
         <main className="h-dvh flex  font-qsand">
           <section className="flex flex-col flex-1 justify-center items-center p-10 overflow-y-auto">
             <Outlet />
@@ -19,7 +17,7 @@ const AuthLayout = () => {
             className="hidden xl:block h-full w-1/2 object-cover bg-no-repeat"
           />
         </main>
-      </AuthCtxProvider>
+      {/* </AuthCtxProvider> */}
     </>
   );
 };

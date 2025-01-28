@@ -2,15 +2,13 @@
 import MobileBottomBar from "@/components/layout/mobile-sidebar/mobile-bottom-bar";
 import SideBar from "@/components/layout/desktop-sidebar/side-bar";
 import TopBar from "@/components/layout/TopBar";
-// import AuthCtxProvider from "@/context/AuthCtx";
 import LikePostCtxProvider from "@/context/PostCtx";
 import { Outlet } from "react-router-dom";
-import AuthCtxProvider from "@/context/AuthCtx";
 
 const RootLayout = () => {
   return (
     <>
-      <AuthCtxProvider>
+      {/* <AuthCtxProvider> */}
         <section className=" font-qsand">
           <header className="block xl:hidden">
             <TopBar />
@@ -29,7 +27,7 @@ const RootLayout = () => {
             <MobileBottomBar />
           </footer>
         </section>
-      </AuthCtxProvider>
+      {/* </AuthCtxProvider> */}
     </>
   );
 };

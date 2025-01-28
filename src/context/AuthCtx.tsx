@@ -36,8 +36,9 @@ const AuthCtxProvider = ({ children }: { children: ReactNode }) => {
       localStorage.getItem("cookieFallback") === "[]" ||
       localStorage.getItem("cookieFallback") === null
     ) {
-      // navigate("/auth/sign-in");
-      // localStorage.removeItem("cookieFallback");
+      setUser(undefined);
+      setLoggedInUser(undefined);
+      setIsAuth(false);
     } else {
       if (!user) {
         checkAuthUser();
@@ -48,6 +49,7 @@ const AuthCtxProvider = ({ children }: { children: ReactNode }) => {
   const checkAuthUser = async () => {
     try {
       const currentAccount = await getCurrentUser();
+
       if (currentAccount) {
         setUser({
           id: currentAccount.$id,
@@ -65,7 +67,6 @@ const AuthCtxProvider = ({ children }: { children: ReactNode }) => {
         return false;
       }
     } catch (error) {
-      console.error("Error checking user:", error);
       handleLogout();
       return false;
     }
@@ -99,3 +100,17 @@ type AuthCtxProps = {
   setIsAuth: React.Dispatch<React.SetStateAction<boolean>>;
   checkAuthUser: () => Promise<boolean>;
 };
+
+// useEffect(() => {
+//   if (
+//     localStorage.getItem("cookieFallback") === "[]" ||
+//     localStorage.getItem("cookieFallback") === null
+//   ) {
+//     // navigate("/auth/sign-in");
+//     // localStorage.removeItem("cookieFallback");
+//   } else {
+//     if (!user) {
+//       checkAuthUser();
+//     }
+//   }
+// }, [navigate]);
