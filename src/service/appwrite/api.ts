@@ -19,6 +19,7 @@ import { NewUserProps } from "@/types/userType";
 import { NewPostProps, UpdatePostProps } from "@/types/postTypes";
 import { throwError } from "@/utils/throwError";
 
+
 //--------------------------------Auth-------------------------------------//
 
 export async function checkIfUserLoggedIn() {
@@ -125,7 +126,8 @@ export async function createPost(postInfo: NewPostProps) {
   try {
     // upload file and get url:
     const uploadedFile = await uploadFile(postInfo.file[0]);
-    const fileUrl = getFilePreview(uploadedFile.$id);
+    // const fileUrl = getFilePreview(uploadedFile.$id);
+    const fileUrl = getFileView(uploadedFile.$id);
 
     deleteImg = uploadedFile;
 
@@ -165,10 +167,22 @@ export async function uploadFile(file: File) {
   }
 }
 
+// uses transformation internally - for pro plan only
 export function getFilePreview(fileId: string) {
   try {
     const fileUrl = storage.getFilePreview(STORAGE_ID, fileId);
 
+    return fileUrl;
+  } catch (error) {
+    throw throwError(error);
+  }
+}
+
+export function getFileView(fileId: string) {
+  // console.log("Image URL", storage.getFileView(STORAGE_ID, fileId).href);
+
+  try {
+    const fileUrl = storage.getFileView(STORAGE_ID, fileId);
     return fileUrl;
   } catch (error) {
     throw throwError(error);
@@ -197,16 +211,24 @@ export async function getRecentPosts() {
 }
 
 // __ Paginated Fetching Function __ //
+// we are using appwrite cursor to paginate - specifically post id, (we need to pass last post id, so it can continue after)
 export async function getPaginatedPosts({ pageParam }: { pageParam?: string }) {
-  // we are using appwrite cursor to paginate - specifically post id, (we need to pass last post id, so it can continue after)
-  
   const queries: string[] = [Query.orderDesc("$createdAt"), Query.limit(10)];
   if (pageParam) queries.push(Query.cursorAfter(pageParam));
 
   try {
     const paginatedPosts = await db.listDocuments(DB_ID, POST_COL_ID, queries);
     if (!paginatedPosts) throw new Error("Failed to fetch posts");
-    return paginatedPosts;
+
+    const safePosts = paginatedPosts.documents.map((post) => ({
+      ...post,
+      imageURL: post.imageURL?.replace("/preview", "/view"),
+    }));
+
+    return {
+      ...paginatedPosts,
+      documents: safePosts,
+    };
   } catch (error) {
     throw throwError(error);
   }
@@ -216,7 +238,13 @@ export async function getPostById(postId: string) {
   try {
     const res = await db.getDocument(DB_ID, POST_COL_ID, postId);
 
-    return res;
+    // Replace /preview with /view
+    const safeImageUrl = res.imageURL?.replace("/preview", "/view");
+
+    return {
+      ...res,
+      imageURL: safeImageUrl,
+    };
   } catch (error) {
     throw throwError(error);
   }
@@ -233,7 +261,8 @@ export async function updatePost(postInfo: UpdatePostProps) {
     if (updateFile) {
       // upload file and get url:
       const uploadedFile = await uploadFile(postInfo.file[0]);
-      const fileUrl = getFilePreview(uploadedFile.$id);
+      // const fileUrl = getFilePreview(uploadedFile.$id);
+      const fileUrl = getFileView(uploadedFile.$id);
 
       deleteImg = uploadedFile;
       image = { ...image, imageId: uploadedFile.$id, imageURL: fileUrl };

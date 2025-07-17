@@ -1,12 +1,11 @@
 import { H1 } from "@/components/typography/typography";
 import Post from "../../../components/post/Post";
-import {
-  useGetPaginationPosts,
-} from "@/lib/react-query/queriesAndMutations";
+import { useGetPaginationPosts } from "@/lib/react-query/queriesAndMutations";
 import InfinitySpinLoader from "@/components/loaders/InfinitySpinLoader";
 import { Badge } from "@/components/ui/badge";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   // const { data: latestPosts, isPending } = useGetRecentPosts();
@@ -32,9 +31,11 @@ const Home = () => {
 
   return (
     <>
-      <H1 className="text-center pt-6 text-blue-400 hidden xl:block font-poppins font-semibold">
-        Byte-Link
-      </H1>
+      <Link to={"/"}>
+        <H1 className="shadow-lg text-center py-6 bg-gradient-to-r from-blue-950 via-blue-900 to-blue-950 text-blue-400 hidden xl:block font-qsand font-semibold border-b">
+          Byte-Link
+        </H1>
+      </Link>
 
       <section className="flex flex-col flex-1 h-full ">
         {/* no posts */}
