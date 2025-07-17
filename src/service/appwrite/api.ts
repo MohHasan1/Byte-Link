@@ -18,7 +18,7 @@ import {
 import { NewUserProps } from "@/types/userType";
 import { NewPostProps, UpdatePostProps } from "@/types/postTypes";
 import { throwError } from "@/utils/throwError";
-
+import { logInfo } from "@/utils/log";
 
 //--------------------------------Auth-------------------------------------//
 
@@ -240,11 +240,11 @@ export async function getPostById(postId: string) {
 
     // Replace /preview with /view
     const safeImageUrl = res.imageURL?.replace("/preview", "/view");
+    res.imageURL = safeImageUrl;
 
-    return {
-      ...res,
-      imageURL: safeImageUrl,
-    };
+    logInfo(res);
+
+    return res;
   } catch (error) {
     throw throwError(error);
   }
@@ -354,3 +354,151 @@ export async function getSavedPosts(postId: string) {
     throw throwError(error);
   }
 }
+
+// {
+//     "title": "My Cat - linda!!!",
+//     "description": "Linda!",
+//     "location": "Toronto, ON, CAN",
+//     "tags": [
+//         "cat"
+//     ],
+//     "imageId": "687980120024b2c1ec47",
+//     "imageURL": "https://cloud.appwrite.io/v1/storage/buckets/668dd39b000000f60640/files/6879800d003cbc586ac0/view?project=668b42b1003c657affdb",
+//     "links": [],
+//     "$sequence": "68",
+//     "$id": "687980120024b2c1ec47",
+//     "$createdAt": "2025-07-17T22:58:27.277+00:00",
+//     "$updatedAt": "2025-07-17T23:07:50.515+00:00",
+//     "$permissions": [
+//         "read(\"user:68797fab00385868450c\")",
+//         "update(\"user:68797fab00385868450c\")",
+//         "delete(\"user:68797fab00385868450c\")"
+//     ],
+//     "userId": {
+//         "authId": "68797fab00385868450c",
+//         "name": "Jessica james",
+//         "username": "Jessica",
+//         "email": "jessica34@gmail.com",
+//         "bio": null,
+//         "imageId": null,
+//         "imageUrl": "https://cloud.appwrite.io/v1/avatars/initials?name=Jessica+james&project=668b42b1003c657affdb",
+//         "$sequence": "45",
+//         "$id": "68797fac0035dcd083bf",
+//         "$createdAt": "2025-07-17T22:56:45.534+00:00",
+//         "$updatedAt": "2025-07-17T22:56:45.534+00:00",
+//         "$permissions": [],
+//         "likedPostId": [
+//             {
+//                 "title": "My Cat - linda!!!",
+//                 "description": "Linda!",
+//                 "location": "Toronto, ON, CAN",
+//                 "tags": [
+//                     "cat"
+//                 ],
+//                 "imageId": "687980120024b2c1ec47",
+//                 "imageURL": "https://cloud.appwrite.io/v1/storage/buckets/668dd39b000000f60640/files/6879800d003cbc586ac0/view?project=668b42b1003c657affdb",
+//                 "links": [],
+//                 "$sequence": "68",
+//                 "$id": "687980120024b2c1ec47",
+//                 "$createdAt": "2025-07-17T22:58:27.277+00:00",
+//                 "$updatedAt": "2025-07-17T23:07:50.515+00:00",
+//                 "$permissions": [
+//                     "read(\"user:68797fab00385868450c\")",
+//                     "update(\"user:68797fab00385868450c\")",
+//                     "delete(\"user:68797fab00385868450c\")"
+//                 ],
+//                 "$databaseId": "668dd43300289f203b8e",
+//                 "$collectionId": "6696d95e0013382b9ce5"
+//             },
+//             {
+//                 "title": "Work vibes",
+//                 "description": "Best day of work",
+//                 "location": "Toronto, ON",
+//                 "tags": [
+//                     ""
+//                 ],
+//                 "imageId": "685aeba3002115a7da81",
+//                 "imageURL": "https://cloud.appwrite.io/v1/storage/buckets/668dd39b000000f60640/files/685aeba3002115a7da81/preview?project=668b42b1003c657affdb",
+//                 "links": [],
+//                 "$sequence": "67",
+//                 "$id": "685aeba500395d319553",
+//                 "$createdAt": "2025-06-24T18:17:10.224+00:00",
+//                 "$updatedAt": "2025-07-17T23:06:47.104+00:00",
+//                 "$permissions": [
+//                     "read(\"user:685aea8a002c749cd953\")",
+//                     "update(\"user:685aea8a002c749cd953\")",
+//                     "delete(\"user:685aea8a002c749cd953\")"
+//                 ],
+//                 "$databaseId": "668dd43300289f203b8e",
+//                 "$collectionId": "6696d95e0013382b9ce5"
+//             }
+//         ],
+//         "savedPostId": [],
+//         "$databaseId": "668dd43300289f203b8e",
+//         "$collectionId": "6696dbf1002e6ca584b3"
+//     },
+//     "userLikedId": [
+//         {
+//             "authId": "68797fab00385868450c",
+//             "name": "Jessica james",
+//             "username": "Jessica",
+//             "email": "jessica34@gmail.com",
+//             "bio": null,
+//             "imageId": null,
+//             "imageUrl": "https://cloud.appwrite.io/v1/avatars/initials?name=Jessica+james&project=668b42b1003c657affdb",
+//             "$sequence": "45",
+//             "$id": "68797fac0035dcd083bf",
+//             "$createdAt": "2025-07-17T22:56:45.534+00:00",
+//             "$updatedAt": "2025-07-17T22:56:45.534+00:00",
+//             "$permissions": [],
+//             "postId": [
+//                 {
+//                     "title": "My Cat - linda!!!",
+//                     "description": "Linda!",
+//                     "location": "Toronto, ON, CAN",
+//                     "tags": [
+//                         "cat"
+//                     ],
+//                     "imageId": "687980120024b2c1ec47",
+//                     "imageURL": "https://cloud.appwrite.io/v1/storage/buckets/668dd39b000000f60640/files/6879800d003cbc586ac0/view?project=668b42b1003c657affdb",
+//                     "links": [],
+//                     "$id": "687980120024b2c1ec47",
+//                     "$sequence": "68",
+//                     "$createdAt": "2025-07-17T22:58:27.277+00:00",
+//                     "$updatedAt": "2025-07-17T23:07:50.515+00:00",
+//                     "$permissions": [
+//                         "read(\"user:68797fab00385868450c\")",
+//                         "update(\"user:68797fab00385868450c\")",
+//                         "delete(\"user:68797fab00385868450c\")"
+//                     ],
+//                     "$databaseId": "668dd43300289f203b8e",
+//                     "$collectionId": "6696d95e0013382b9ce5"
+//                 }
+//             ],
+//             "savedPostId": [],
+//             "$databaseId": "668dd43300289f203b8e",
+//             "$collectionId": "6696dbf1002e6ca584b3"
+//         },
+//         {
+//             "authId": "685aec2a0002848b8cb4",
+//             "name": "hasan",
+//             "username": "hasan-123",
+//             "email": "hemailhasan88@gmail.com",
+//             "bio": null,
+//             "imageId": null,
+//             "imageUrl": "https://cloud.appwrite.io/v1/avatars/initials?name=hasan&project=668b42b1003c657affdb",
+//             "$sequence": "44",
+//             "$id": "685aec2a00301f2bb1f4",
+//             "$createdAt": "2025-06-24T18:19:23.113+00:00",
+//             "$updatedAt": "2025-06-24T18:19:23.113+00:00",
+//             "$permissions": [],
+//             "postId": [],
+//             "savedPostId": [],
+//             "$databaseId": "668dd43300289f203b8e",
+//             "$collectionId": "6696dbf1002e6ca584b3"
+//         }
+//     ],
+//     "savedUserId": [],
+//     "$databaseId": "668dd43300289f203b8e",
+//     "$collectionId": "6696d95e0013382b9ce5"
+// }
