@@ -32,7 +32,7 @@ const Home = () => {
   return (
     <>
       <Link to={"/"}>
-        <H1 className="shadow-lg text-center py-6 bg-gradient-to-r from-blue-950 via-blue-900 to-blue-950 text-blue-400 hidden xl:block font-qsand font-semibold border-b">
+        <H1 className="shadow-lg backdrop-blur-3xl text-center py-6 bg-gradient-to-r from-blue-950/30 via-blue-800/30 to-blue-950/30 text-blue-400 hidden xl:block font-qsand font-semibold uppercase border-b">
           Byte-Link
         </H1>
       </Link>

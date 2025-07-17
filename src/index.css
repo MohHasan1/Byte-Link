@@ -71,7 +71,7 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border overscroll-none;
   }
   body {
     @apply bg-background text-foreground;

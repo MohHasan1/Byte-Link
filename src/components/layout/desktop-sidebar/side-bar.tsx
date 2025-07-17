@@ -6,7 +6,7 @@ const SideBar = () => {
   return (
     <>
       <aside>
-        <Card className="h-full xl:w-[15%] rounded-none fixed">
+        <Card className="h-full xl:w-[15%] rounded-none fixed ">
           <SideBarHeader />
           <SideBarLinks />
         </Card>
